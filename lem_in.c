@@ -13,7 +13,16 @@
 #include "lem_in.h"
 #include <stdio.h>
 
-int	valid_chars(t_str s, const t_str valid)
+void	print_rooms(t_room *head)
+{
+	while (head)
+	{
+		printf("name = %s, x  = %d, y = %d\n", head->name, head->x, head->y);
+		head = head->next;
+	}
+}
+
+int		valid_chars(t_str s, const t_str valid)
 {
 	int i;
 	int	j;
@@ -35,10 +44,47 @@ int	valid_chars(t_str s, const t_str valid)
 	return (1);
 }
 
-int	main()
+void	free_arr(void	**arr)
 {
+	int	i;
+
+	i = -1;
+	while (arr[++i])
+		free(arr[i]);
+	free(arr);
+}
+
+void	append_head(t_room **head, t_str s)
+{
+	t_room	*new;
+	t_str	*arr_data;
+
+	new  = *head;
+	if (!*head)
+		new = (t_room *)malloc(sizeof(t_room));
+	else
+	{
+		while (new->next)
+			new = new->next;
+		new->next = (t_room *)malloc(sizeof(t_room));
+		new = new->next;
+	}
+	arr_data = ft_strsplit(s, ' ');
+	new->name = ft_strdup(arr_data[0]);
+	new->x = ft_atoi(arr_data[1]);
+	new->y = ft_atoi(arr_data[2]);
+	new->next = NULL;
+	free_arr((void **)arr_data);
+	if (!*head)
+		*head = new;
+}
+
+int		main()
+{
+	t_room	*head;
 	t_str	s;
 	int		num_ants;
+	int		num_rooms;
 
 	/*GET NUMBER OF ANTS*/
 	while (1)
@@ -55,6 +101,8 @@ int	main()
 	printf("num_ants = %d\n", num_ants);
 	
 	/*INITIALIZE ROOMS*/
+	num_rooms = 0;
+	head = NULL;
 	while (1)
 	{
 		while (1)
@@ -66,10 +114,14 @@ int	main()
 		}
 		if (ft_find_index(s, ' ') < 0)
 			break ;
+		append_head(&head, s);
 		ft_putendl(s);
+		num_rooms++;
 		//printf("find_index(s, ' ') = %d\n", ft_find_index(s, ' '));
 		free(s);
 	}
+	//print_rooms(head);
+	printf("num_rooms = %d\n", num_rooms);
 
 	/*SET LINKS*/
 	if (s[0] != '#')

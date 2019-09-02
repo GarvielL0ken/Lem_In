@@ -16,6 +16,14 @@
 
 typedef char *t_str;
 
-void	print_err_msg(const t_str err_msg);
+typedef	struct		s_room
+{
+	t_str			name;
+	int				x;
+	int				y;
+	struct s_room	*next;
+}					t_room;
+
+void				print_err_msg(const t_str err_msg);
 
 #endif
