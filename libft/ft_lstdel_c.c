@@ -15,5 +15,6 @@
 void	ft_lstdel_c(void *content, size_t content_size)
 {
 	ft_strdel((char **)&content);
-	content_size = -1;
+	content_size = 0;
+	content_size--;
 }

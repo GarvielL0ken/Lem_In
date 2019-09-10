@@ -35,12 +35,10 @@ static int	ft_loop_for_atoi(const char *str, int i, int negative)
 int			ft_atoi(const char *str)
 {
 	int		i;
-	int		valid;
 	int		negative;
 
 	negative = 1;
 	i = 0;
-	valid = 1;
 	while (ft_is_white_space(str[i]))
 		i++;
 	if (str[i] == '-')

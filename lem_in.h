@@ -22,6 +22,9 @@ typedef	struct		s_room
 	int				x;
 	int				y;
 	struct s_room	*next;
+	struct s_room	**arr_links;
+	int				num_links;
+	int				link_to_set;
 }					t_room;
 
 void				print_err_msg(const t_str err_msg);
