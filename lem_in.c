@@ -196,6 +196,33 @@ void	append_path(t_path *path, int next_link)
 	path->path_length++;
 }
 
+int		visited(t_path *path, int next_link)
+{
+	int i;
+
+	i = 0;
+	while (i < path->path_length)
+	{
+		if (path->arr_path[i] == path->current->arr_links[next_link]->index)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+void	print_path(t_path *head, t_room **arr_rooms)
+{
+	int i;
+
+	i = 0;
+	while (i < head->path_length - 1)
+	{
+		printf("%s-", arr_rooms[head->arr_path[i]]->name);
+		i++;
+	}
+	printf("%s\n", arr_rooms[head->arr_path[i]]->name);
+}
+
 void	find_path(t_room **arr_rooms, int num_ants, int num_rooms)
 {
 	t_path	*head;
@@ -220,11 +247,12 @@ void	find_path(t_room **arr_rooms, int num_ants, int num_rooms)
 		i = 0;
 		while (i < head->current->links)
 		{
-			if (head->current->arr_links[i]->visited < max_num_paths)
+			if (head->current->arr_links[i]->visited < max_num_paths && !visited(head, i))
 			{
 				append_path(head, i);
 				head->current = head->current->arr_links[i];
 				head->current->visited++;
+				print_path(head, arr_rooms);
 				break ;
 			}
 			i++;
@@ -233,13 +261,7 @@ void	find_path(t_room **arr_rooms, int num_ants, int num_rooms)
 		if (head->current->type == 2)
 			run = 0;
 	}
-	i = 0;
-	while (i < head->path_length - 1)
-	{
-		printf("%s-", arr_rooms[head->arr_path[i]]->name);
-		i++;
-	}
-	printf("%s\n", arr_rooms[head->arr_path[i]]->name);
+	print_path(head, arr_rooms);
 }
 
 int		main()
