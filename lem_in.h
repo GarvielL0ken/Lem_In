@@ -18,16 +18,14 @@ typedef char *t_str;
 
 typedef	struct		s_room
 {
-	t_str			name;
-	int				start;
-	int				end;
-	int				visited;
-	int				x;
-	int				y;
-	struct s_room	*next;
 	struct s_room	**arr_links;
-	int				num_links;
-	int				link_to_set;
+	struct s_room	*next;
+	unsigned int	visited : 6; 
+	unsigned int	links : 8;
+	unsigned int	type : 2;
+	unsigned int	x : 8;
+	unsigned int	y : 8;
+	t_str			name;
 }					t_room;
 
 typedef	struct		s_node

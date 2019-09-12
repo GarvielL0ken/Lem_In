@@ -54,7 +54,7 @@ void	free_arr(void	**arr)
 	free(arr);
 }
 
-void	append_head(t_room **head, t_str s, int start, int end)
+void	append_head(t_room **head, t_str s, unsigned int type)
 {
 	t_room	*new;
 	t_str	*arr_data;
@@ -75,10 +75,8 @@ void	append_head(t_room **head, t_str s, int start, int end)
 	new->y = ft_atoi(arr_data[2]);
 	new->next = NULL;
 	new->arr_links = NULL;
-	new->num_links = 0;
-	new->link_to_set = 0;
-	new->start = start;
-	new->end = end;
+	new->links = 0;
+	new->type = type;
 	new->visited = 0;
 	free_arr((void **)arr_data);
 	if (!*head)
@@ -95,7 +93,7 @@ void	inc_num_links(t_room **arr_rooms, t_str s)
 	while (arr_rooms[i])
 	{
 		if (!ft_strcmp(arr_rooms[i]->name, rooms[0]) || !ft_strcmp(arr_rooms[i]->name, rooms[1]))
-			arr_rooms[i]->num_links += 1;
+			arr_rooms[i]->links += 1;
 		i++;
 	}
 	free_arr((void **)rooms);
@@ -136,12 +134,12 @@ void	set_links(t_room **arr_rooms, t_str *arr_links)
 		k = 0;
 		while (ft_strcmp(arr_rooms[k]->name, current_rooms[1]))
 			k++;
-		tmp = arr_rooms[j]->link_to_set;
+		tmp = arr_rooms[j]->links;
 		arr_rooms[j]->arr_links[tmp] = arr_rooms[k];
-		arr_rooms[j]->link_to_set++;
-		tmp = arr_rooms[k]->link_to_set;
+		arr_rooms[j]->links++;
+		tmp = arr_rooms[k]->links;
 		arr_rooms[k]->arr_links[tmp] = arr_rooms[j];
-		arr_rooms[k]->link_to_set++;
+		arr_rooms[k]->links++;
 		free_arr((void **)current_rooms);
 		i++;
 	}
@@ -156,7 +154,7 @@ void	print_links(t_room **arr_rooms)
 	while (arr_rooms[i])
 	{
 		j = 0;
-		while (j < arr_rooms[i]->num_links)
+		while (j < arr_rooms[i]->links)
 		{
 			ft_putstr(arr_rooms[i]->name);
 			ft_putchar('-');
@@ -167,23 +165,17 @@ void	print_links(t_room **arr_rooms)
 	}
 }
 
-void	find_path(t_room **arr_rooms)
-{
-
-}
-
 int		main()
 {
-	t_room	**arr_rooms;
-	t_room	*head;
-	t_str	s;
-	t_str	links;
-	t_str	*arr_links;
-	int		num_ants;
-	int		num_rooms;
-	int		i;
-	int		i_start;
-	int		i_end;
+	t_room			**arr_rooms;
+	t_room			*head;
+	t_str			s;
+	t_str			links;
+	t_str			*arr_links;
+	int				num_ants;
+	int				num_rooms;
+	int				i;
+	unsigned int	type;
 
 	/*GET NUMBER OF ANTS*/
 	while (1)
@@ -204,22 +196,21 @@ int		main()
 	head = NULL;
 	while (1)
 	{
-		i_start = 0;
-		i_end = 0;
+		type = 0;
 		while (1)
 		{
 			get_next_line(0, &s);
 			if (s[0] != '#')
 				break ;
 			if (!ft_strcmp(s, "##start"))
-				i_start = 1;
+				type = 1;
 			if (!ft_strcmp(s, "##end"))
-				i_end = 1;
+				type = 2;
 			free(s);
 		}
 		if (ft_find_index(s, ' ') < 0)
 			break ;
-		append_head(&head, s, i_start, i_end);
+		append_head(&head, s, type);
 		ft_putendl(s);
 		num_rooms++;
 		//printf("find_index(s, ' ') = %d\n", ft_find_index(s, ' '));
@@ -274,9 +265,12 @@ int		main()
 	ft_putchar('\n');
 	i = -1;
 	while (++i < num_rooms)
-		arr_rooms[i]->arr_links = (t_room **)malloc(sizeof(t_room *) * arr_rooms[i]->num_links);
+	{
+		arr_rooms[i]->arr_links = (t_room **)malloc(sizeof(t_room *) * arr_rooms[i]->links);
+		arr_rooms[i]->links = 0;
+	}
 	set_links(arr_rooms, arr_links);
-	//print_links(arr_rooms);
+	print_links(arr_rooms);
 
-	find_path(arr_rooms);
+	//find_path(arr_rooms);
 }
