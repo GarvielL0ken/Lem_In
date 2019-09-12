@@ -19,6 +19,9 @@ typedef char *t_str;
 typedef	struct		s_room
 {
 	t_str			name;
+	int				start;
+	int				end;
+	int				visited;
 	int				x;
 	int				y;
 	struct s_room	*next;
@@ -26,6 +29,12 @@ typedef	struct		s_room
 	int				num_links;
 	int				link_to_set;
 }					t_room;
+
+typedef	struct		s_node
+{
+	int				index;
+	struct s_node	*next;
+}					t_node;
 
 void				print_err_msg(const t_str err_msg);
 
