@@ -12,6 +12,7 @@
 
 #include "lem_in.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 void	print_rooms(t_room *head)
 {
@@ -61,12 +62,16 @@ void	append_head(t_room **head, t_str s, unsigned int type)
 
 	new  = *head;
 	if (!*head)
+	{
 		new = (t_room *)malloc(sizeof(t_room));
+		new->index = 0;
+	}
 	else
 	{
 		while (new->next)
 			new = new->next;
 		new->next = (t_room *)malloc(sizeof(t_room));
+		new->next->index = new->index + 1;
 		new = new->next;
 	}
 	arr_data = ft_strsplit(s, ' ');
@@ -163,6 +168,78 @@ void	print_links(t_room **arr_rooms)
 		}
 		i++;
 	}
+}
+
+t_path	*new_head(t_room *room, int num_rooms)
+{
+	t_path	*head;
+	int		i;
+
+	head = (t_path *)malloc(sizeof(t_path));
+	if (head)
+	{
+		head->current = room;
+		head->next = NULL;
+		head->arr_path = (unsigned char *)malloc(num_rooms);
+		i = 0;
+		while (++i < num_rooms)
+			head->arr_path[i] = 0;
+		head->arr_path[0] = room->index;
+		head->path_length = 1;
+	}
+	return (head);
+}
+
+void	append_path(t_path *path, int next_link)
+{
+	path->arr_path[path->path_length] = path->current->arr_links[next_link]->index;
+	path->path_length++;
+}
+
+void	find_path(t_room **arr_rooms, int num_ants, int num_rooms)
+{
+	t_path	*head;
+	int	max_num_paths;
+	int	i;
+	int run;
+
+	max_num_paths = num_ants;
+	i = -1;
+	while (arr_rooms[++i])
+	{
+		if (arr_rooms[i]->type && arr_rooms[i]->links < max_num_paths)
+			max_num_paths = arr_rooms[i]->links;
+		if (arr_rooms[i]->type == 1)
+			head = new_head(arr_rooms[i], num_rooms);
+	}
+	head->current->visited = max_num_paths;
+	printf("start.name = %s\n", head->current->name);
+	run = 1;
+	while (run)
+	{
+		i = 0;
+		while (i < head->current->links)
+		{
+			if (head->current->arr_links[i]->visited < max_num_paths)
+			{
+				append_path(head, i);
+				head->current = head->current->arr_links[i];
+				head->current->visited++;
+				break ;
+			}
+			i++;
+		}
+		printf("current.name = %s\n", head->current->name);
+		if (head->current->type == 2)
+			run = 0;
+	}
+	i = 0;
+	while (i < head->path_length - 1)
+	{
+		printf("%s-", arr_rooms[head->arr_path[i]]->name);
+		i++;
+	}
+	printf("%s\n", arr_rooms[head->arr_path[i]]->name);
 }
 
 int		main()
@@ -272,5 +349,5 @@ int		main()
 	set_links(arr_rooms, arr_links);
 	print_links(arr_rooms);
 
-	//find_path(arr_rooms);
+	find_path(arr_rooms, num_ants, num_rooms);
 }

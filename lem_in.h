@@ -25,14 +25,17 @@ typedef	struct		s_room
 	unsigned int	type : 2;
 	unsigned int	x : 8;
 	unsigned int	y : 8;
+	unsigned int	index : 8;
 	t_str			name;
 }					t_room;
 
-typedef	struct		s_node
+typedef struct 		s_path
 {
-	int				index;
-	struct s_node	*next;
-}					t_node;
+	struct s_room	*current;
+	struct s_path	*next;
+	unsigned char	*arr_path;
+	int				path_length : 8;
+}					t_path;	
 
 void				print_err_msg(const t_str err_msg);
 

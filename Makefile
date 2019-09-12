@@ -6,7 +6,7 @@
 #    By: jsarkis <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/02 15:02:35 by jsarkis           #+#    #+#              #
-#    Updated: 2019/09/02 15:02:36 by jsarkis          ###   ########.fr        #
+#    Updated: 2019/09/12 14:52:46 by jsarkis          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,3 +24,7 @@ $(LIB):
 
 $(LEMIN): lem_in.c $(SRCS) $(HEADER)
 	gcc $(CFLAGS) lem_in.c $(SRCS) $(LINK) -o $(LEMIN)
+
+fclean:
+	make -C libft fclean
+	rm lem_in
