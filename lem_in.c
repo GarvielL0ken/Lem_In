@@ -185,7 +185,7 @@ t_path	*new_head(t_room *room, int num_rooms)
 		while (++i < num_rooms)
 			head->arr_path[i] = 0;
 		head->arr_path[0] = room->index;
-		head->path_length = 1;
+		head->path_length = 0;
 	}
 	return (head);
 }
@@ -214,13 +214,126 @@ void	print_path(t_path *head, t_room **arr_rooms)
 {
 	int i;
 
-	i = 0;
-	while (i < head->path_length - 1)
+	while (head)
 	{
-		printf("%s-", arr_rooms[head->arr_path[i]]->name);
+		i = 0;
+		while (i < head->path_length)
+		{
+			printf("%s-", arr_rooms[head->arr_path[i]]->name);
+			i++;
+		}
+		printf("%s\n", arr_rooms[head->arr_path[i]]->name);
+		head = head->next;
+	}
+}
+
+int		valid_path(t_path *path, int max_num_paths, int i)
+{
+	if (path->current->type == 2)
+		return (1);
+	if (path->current->arr_links[i]->visited < max_num_paths && !visited(path, i))
+		return (1);
+	return (0);
+}
+
+int		num_valid_paths(t_path *path, int max_nam_paths)
+{
+	int	i;
+	int	num_paths;
+
+	i = 0;
+	num_paths = 0;
+	while (i < path->current->links)
+	{
+		if (valid_path(path, max_nam_paths, i))
+			num_paths++;
 		i++;
 	}
-	printf("%s\n", arr_rooms[head->arr_path[i]]->name);
+	return (num_paths - 1);
+	
+}
+
+void	new_path(t_path *path, int i)
+{
+	t_path 	*new;
+	int		j;
+
+	new = path;
+	while (new->next)
+		new = new->next;
+	new->next = (t_path *)malloc(sizeof(t_path));
+	if (new->next)
+	{
+		new = new->next;
+		new->current = path->current->arr_links[i];
+		new->path_length = path->path_length + 1;
+		new->arr_path = (unsigned char *)malloc(1024);
+		j = -1;
+		while (++j < new->path_length)
+			new->arr_path[j] = path->arr_path[j];
+		new->arr_path[j] = path->current->arr_links[i]->index;
+		new->current->visited++;
+	}
+}
+
+void	propagate_paths(t_path *head, int max_num_paths, int path_length)
+{
+	t_path	*path;
+	int		i;
+	int		num_paths;
+
+	path = head;
+	while (path)
+	{
+		if (path->path_length == path_length && path->current->type < 2)
+		{
+			num_paths = num_valid_paths(path, max_num_paths);
+			i = 0;
+			while (i < path->current->links && num_paths)
+			{
+				if (valid_path(path, max_num_paths, i))
+				{
+					new_path(path, i);
+					num_paths--;
+				}
+				i++;
+			}
+			while (i < path->current->links)
+			{
+				if (valid_path(path, max_num_paths, i))
+				{
+					path->current = path->current->arr_links[i];
+					path->path_length++;
+					path->arr_path[path->path_length] = path->current->index;
+					path->current->visited++;
+					break ;
+				}
+				i++;
+			}
+		}
+		path = path->next;
+	}
+}
+
+int		propagated(t_path *head)
+{
+	int i;
+
+	while (head)
+	{	
+		if (head->current->type < 2)
+		{
+			i = 0;
+			while (i < head->current->links)
+			{
+				if (!visited(head, i))
+					return (0);
+				i++;
+			}
+		}
+		head = head->next;
+	}
+	return (1);
 }
 
 void	find_path(t_room **arr_rooms, int num_ants, int num_rooms)
@@ -240,27 +353,19 @@ void	find_path(t_room **arr_rooms, int num_ants, int num_rooms)
 			head = new_head(arr_rooms[i], num_rooms);
 	}
 	head->current->visited = max_num_paths;
-	printf("start.name = %s\n", head->current->name);
+
 	run = 1;
-	while (run)
+	i = 0;
+	while (run && i < 4)
 	{
-		i = 0;
-		while (i < head->current->links)
-		{
-			if (head->current->arr_links[i]->visited < max_num_paths && !visited(head, i))
-			{
-				append_path(head, i);
-				head->current = head->current->arr_links[i];
-				head->current->visited++;
-				print_path(head, arr_rooms);
-				break ;
-			}
-			i++;
-		}
-		printf("current.name = %s\n", head->current->name);
-		if (head->current->type == 2)
+		propagate_paths(head, max_num_paths, i);
+		i++;
+		printf("i = %d\n", i);
+		print_path(head, arr_rooms);
+		if (propagated(head))
 			run = 0;
 	}
+	printf("\n");
 	print_path(head, arr_rooms);
 }
 
@@ -280,6 +385,7 @@ int		main()
 	while (1)
 	{
 		get_next_line(0, &s);
+		ft_putendl(s);
 		if (s[0] != '#')
 			break ;
 		free(s);
@@ -288,7 +394,6 @@ int		main()
 		print_err_msg("INVALID");
 	num_ants = ft_atoi(s);
 	free(s);
-	printf("num_ants = %d\n", num_ants);
 	
 	/*INITIALIZE ROOMS*/
 	num_rooms = 0;
@@ -299,6 +404,7 @@ int		main()
 		while (1)
 		{
 			get_next_line(0, &s);
+			ft_putendl(s);
 			if (s[0] != '#')
 				break ;
 			if (!ft_strcmp(s, "##start"))
@@ -310,13 +416,9 @@ int		main()
 		if (ft_find_index(s, ' ') < 0)
 			break ;
 		append_head(&head, s, type);
-		ft_putendl(s);
 		num_rooms++;
-		//printf("find_index(s, ' ') = %d\n", ft_find_index(s, ' '));
 		free(s);
 	}
-	//print_rooms(head);
-	printf("num_rooms = %d\n", num_rooms);
 
 	arr_rooms = (t_room **)malloc(sizeof(t_room *) * (num_rooms + 1));
 	i = 0;
@@ -342,6 +444,7 @@ int		main()
 		while (1)
 		{
 			get_next_line(0, &s);
+			ft_putendl(s);
 			if (s[0] != '#')
 				break ;
 			free(s);
@@ -350,18 +453,10 @@ int		main()
 			break ;
 		inc_num_links(arr_rooms, s);
 		str_cat_char(links, s, ' ');
-		//ft_putendl(s);
 		free(s);
 	}
 	arr_links = ft_strsplit(links, ' ');
 	free(links);
-	i = 0;
-	while (arr_links[i])
-	{
-		ft_putendl(arr_links[i]);
-		i++;
-	}
-	ft_putchar('\n');
 	i = -1;
 	while (++i < num_rooms)
 	{
@@ -369,7 +464,5 @@ int		main()
 		arr_rooms[i]->links = 0;
 	}
 	set_links(arr_rooms, arr_links);
-	print_links(arr_rooms);
-
 	find_path(arr_rooms, num_ants, num_rooms);
 }
