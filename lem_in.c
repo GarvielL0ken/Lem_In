@@ -315,7 +315,7 @@ void	propagate_paths(t_path *head, int max_num_paths, int path_length)
 	}
 }
 
-int		propagated(t_path *head)
+int		propagated(t_path *head, int max_num_paths)
 {
 	int i;
 
@@ -326,7 +326,7 @@ int		propagated(t_path *head)
 			i = 0;
 			while (i < head->current->links)
 			{
-				if (!visited(head, i))
+				if (valid_path(head, max_num_paths, i))
 					return (0);
 				i++;
 			}
@@ -356,13 +356,11 @@ void	find_path(t_room **arr_rooms, int num_ants, int num_rooms)
 
 	run = 1;
 	i = 0;
-	while (run && i < 4)
+	while (run)
 	{
 		propagate_paths(head, max_num_paths, i);
 		i++;
-		printf("i = %d\n", i);
-		print_path(head, arr_rooms);
-		if (propagated(head))
+		if (propagated(head, max_num_paths))
 			run = 0;
 	}
 	printf("\n");
