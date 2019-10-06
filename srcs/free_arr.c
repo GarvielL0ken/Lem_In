@@ -1,20 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   free_arr.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jsarkis <jsarkis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/22 19:37:40 by jsarkis           #+#    #+#             */
-/*   Updated: 2019/10/06 13:08:25 by jsarkis          ###   ########.fr       */
+/*   Created: 2019/09/17 11:36:05 by jsarkis           #+#    #+#             */
+/*   Updated: 2019/09/19 12:17:47 by jsarkis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../lem_in_js.h"
 
-void	ft_putstr_fd(char const *str, int fd)
+void	free_arr(void **arr)
 {
-	if (!str || !fd)
-		return ;
-	write(fd, str, ft_strlen(str));
+	int	i;
+
+	i = -1;
+	while (arr[++i])
+		free(arr[i]);
+	free(arr);
 }

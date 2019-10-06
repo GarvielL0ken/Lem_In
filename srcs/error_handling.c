@@ -1,20 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   error_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jsarkis <jsarkis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/22 19:37:40 by jsarkis           #+#    #+#             */
-/*   Updated: 2019/10/06 13:08:25 by jsarkis          ###   ########.fr       */
+/*   Created: 2019/09/02 18:21:21 by jsarkis           #+#    #+#             */
+/*   Updated: 2019/09/19 12:15:13 by jsarkis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../lem_in_js.h"
 
-void	ft_putstr_fd(char const *str, int fd)
+void	print_err_msg(const t_str err_msg)
 {
-	if (!str || !fd)
-		return ;
-	write(fd, str, ft_strlen(str));
+	ft_putendl_fd(err_msg, 2);
+	exit(1);
 }

@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "lem_in.h"
-#include <stdio.h>
+#include <stdio.h> //DELETE THIS
 #include <stdlib.h>
 
 void	print_rooms(t_room *head)
@@ -21,28 +21,6 @@ void	print_rooms(t_room *head)
 		printf("name = %s, x  = %d, y = %d\n", head->name, head->x, head->y);
 		head = head->next;
 	}
-}
-
-int		valid_chars(t_str s, const t_str valid)
-{
-	int i;
-	int	j;
-
-	i = 0;
-	while (s[i])
-	{
-		j = 0;
-		while (valid[j])
-		{
-			if (s[i] == valid[j])
-				break ;
-			j++;
-		}
-		if (!valid[j])
-			return (0);
-		i++;
-	}
-	return (1);
 }
 
 void	free_arr(void	**arr)
@@ -214,22 +192,27 @@ void	print_path(t_path *head, t_room **arr_rooms)
 {
 	int i;
 
+	i = 0;
+	while (i < head->path_length)
+	{
+		printf("%s-", arr_rooms[head->arr_path[i]]->name);
+		i++;
+	}
+	printf("%s\n", arr_rooms[head->arr_path[i]]->name);
+}
+
+void	print_paths(t_path *head, t_room **arr_rooms)
+{
 	while (head)
 	{
-		i = 0;
-		while (i < head->path_length)
-		{
-			printf("%s-", arr_rooms[head->arr_path[i]]->name);
-			i++;
-		}
-		printf("%s\n", arr_rooms[head->arr_path[i]]->name);
+		print_path(head, arr_rooms);
 		head = head->next;
 	}
 }
 
 int		valid_path(t_path *path, int max_num_paths, int i)
 {
-	if (path->current->type == 2)
+	if (path->current->arr_links[i]->type == 2)
 		return (1);
 	if (path->current->arr_links[i]->visited < max_num_paths && !visited(path, i))
 		return (1);
@@ -276,6 +259,25 @@ void	new_path(t_path *path, int i)
 	}
 }
 
+int		path_can_be_expanded(t_path *head, int max_num_path)
+{
+	int	i;
+
+	if (!head)
+		return (-1);
+	if (head->current->type < 2)
+	{
+		i = 0;
+		while (i < head->current->links)
+		{
+			if (valid_path(head, max_num_path, i))
+				return (1);
+			i++;
+		}
+	}
+	return (0);
+}
+
 void	propagate_paths(t_path *head, int max_num_paths, int path_length)
 {
 	t_path	*path;
@@ -315,29 +317,193 @@ void	propagate_paths(t_path *head, int max_num_paths, int path_length)
 	}
 }
 
-int		propagated(t_path *head, int max_num_paths)
+int		propagated(t_path *head, int max_num_paths, int path_length)
 {
-	int i;
+	int		num_paths_found;
+	int		valid;
 
+	num_paths_found = 0;
+	valid = 1;
 	while (head)
 	{	
-		if (head->current->type < 2)
-		{
-			i = 0;
-			while (i < head->current->links)
-			{
-				if (valid_path(head, max_num_paths, i))
-					return (0);
-				i++;
-			}
-		}
+		if (path_can_be_expanded(head, max_num_paths))
+			valid = 0;
+		if (head->current->type == 2 && head->path_length == path_length)
+			num_paths_found++;
+		if (num_paths_found == max_num_paths)
+			return (1);
 		head = head->next;
 	}
-	return (1);
+	return (valid);
+}
+
+void	remove_invalid_paths(t_path *head)
+{
+	t_path *temp;
+
+	if (!head->next)
+		return ;
+	while (head->current->type < 2)
+	{
+		temp = head->next;
+		free(head->arr_path);
+		free(head);
+		head = temp;
+		if (!head)
+			return ;
+	}
+	while (head->next)
+	{
+		if (head->next->current->type < 2)
+		{
+			temp = head->next;
+			head->next = head->next->next;
+			free(temp->arr_path);
+			free(temp);
+		}
+		else
+			head = head->next;
+	}
+}
+
+int		collide(t_path_set path_set, t_path *head, t_path *next)
+{
+	t_path *current;
+	int		i;
+	int 	j;
+	int		k;
+
+	i = 0;
+	while (i < path_set.num_paths)
+	{
+		current = head;
+		j = -1;
+		while (++j < path_set.arr_paths[i])
+			current = current->next;
+		j = 1;
+		while (j < next->path_length - 1)
+		{
+			k = 1;
+			while (k < current->path_length - 1)
+			{
+				if (next->arr_path[j] == current->arr_path[k])
+					return (1);
+				k++;
+			}
+			j++;
+		}
+		i++;
+	}
+	return (0);
+}
+
+int		num_moves(t_path_set path_set, t_path *head, int num_ants)
+{
+	t_path	*current;
+	int		min;
+	int		num_paths_to_use;
+	int		i;
+	int		j;
+
+	current = head;
+	num_paths_to_use = 1;
+	i = 1;
+	j = 0;
+	while (j++ < path_set.arr_paths[0])
+		current = current->next;
+	min = current->path_length;
+	while (i < path_set.num_paths)
+	{
+		while (j++ < path_set.arr_paths[i])
+			current = current->next;
+		if (current->path_length < min && current->path_length < num_ants + 1)
+			min = current->path_length;
+		if (current->path_length < num_ants + 1)
+			num_paths_to_use++;
+		i++;
+	}
+	return ((num_ants / num_paths_to_use) + min - 1);
+}
+
+t_path_set	find_shortest_set(t_path *head, int num_ants, int max_num_paths, t_room **arr_rooms)
+{
+	t_path_set	best;
+	t_path_set	path_set;
+	t_path		*current;
+	t_path		*next;
+	int			i;
+	int			j;
+
+	best.arr_paths = (t_ustr)malloc(max_num_paths);
+	best.arr_paths[0] = 0;
+	best.num_moves = head->path_length + num_ants - 1;
+	best.num_paths = 1;
+	path_set.arr_paths = (t_ustr)malloc(max_num_paths);
+	current = head;
+	i = 0;
+
+	while (current)
+	{
+		path_set.arr_paths[0] = i;
+		path_set.num_paths = 1;
+		next = current->next;
+		j = i + 1;
+		ft_putstr("Current: ");
+		print_path(current, arr_rooms);
+		while (next)
+		{
+			ft_putstr("Next:    ");
+			print_path(next, arr_rooms);
+			printf("collide = %d\n", collide(path_set, head, next));
+			if (!collide(path_set, head, next))
+			{
+				ft_putstr("OK\n");
+				path_set.arr_paths[path_set.num_paths] = j;
+				path_set.num_paths++;
+			}
+			next = next->next;
+			j++;
+		}
+		path_set.num_moves = num_moves(path_set, head, num_ants);
+		if (path_set.num_moves < best.num_moves)
+		{
+			j = -1;
+			while (++j < path_set.num_paths)
+				best.arr_paths[j] = path_set.arr_paths[j];
+			best.num_moves = path_set.num_moves;
+			best.num_paths = path_set.num_paths;
+		}
+		current = current->next;
+		i++;
+	}
+	return (best);
+}
+
+void	move_ants(t_path_set path_set, t_path *head, t_room **arr_rooms)
+{
+	t_path **arr_paths;
+	t_path *temp;
+	int		i;
+	int 	j;
+
+	ft_putchar('\n');
+	arr_paths = (t_path **)malloc(sizeof(t_path *) * path_set.num_paths);
+	i = 0;
+	temp = head;
+	while (i < path_set.num_paths)
+	{
+		j = 0;
+		while (j++ < path_set.arr_paths[i])
+			temp = temp->next;
+		arr_paths[i] = temp;
+		print_path(arr_paths[i], arr_rooms);
+		i++;
+	}
 }
 
 void	find_path(t_room **arr_rooms, int num_ants, int num_rooms)
 {
+	t_path_set	path_set;
 	t_path	*head;
 	int	max_num_paths;
 	int	i;
@@ -353,6 +519,7 @@ void	find_path(t_room **arr_rooms, int num_ants, int num_rooms)
 			head = new_head(arr_rooms[i], num_rooms);
 	}
 	head->current->visited = max_num_paths;
+	printf("max_num_paths = %d\n\n", max_num_paths);
 
 	run = 1;
 	i = 0;
@@ -360,11 +527,13 @@ void	find_path(t_room **arr_rooms, int num_ants, int num_rooms)
 	{
 		propagate_paths(head, max_num_paths, i);
 		i++;
-		if (propagated(head, max_num_paths))
+		if (propagated(head, max_num_paths, i))
 			run = 0;
 	}
-	printf("\n");
-	print_path(head, arr_rooms);
+	remove_invalid_paths(head);
+	print_paths(head, arr_rooms);
+	path_set = find_shortest_set(head, num_ants, max_num_paths, arr_rooms);
+	move_ants(path_set, head, arr_rooms);
 }
 
 int		main()
@@ -380,46 +549,42 @@ int		main()
 	unsigned int	type;
 
 	/*GET NUMBER OF ANTS*/
-	while (1)
-	{
-		get_next_line(0, &s);
-		ft_putendl(s);
-		if (s[0] != '#')
-			break ;
-		free(s);
-	}
-	if (!valid_chars(s, "0123456789"))
-		print_err_msg("INVALID");
-	num_ants = ft_atoi(s);
-	free(s);
+	num_ants = get_ants();
 	
 	/*INITIALIZE ROOMS*/
 	num_rooms = 0;
 	head = NULL;
+	/*LOOP THROUGH EACH LINE ON STDIN*/
 	while (1)
 	{
 		type = 0;
+		/*LOOP UNTIL A LINE THAT DOESNT START WITH A '#' IS FOUND*/
 		while (1)
 		{
 			get_next_line(0, &s);
 			ft_putendl(s);
+			/*EXIT CONDITION*/
 			if (s[0] != '#')
 				break ;
+			/*CHECK WHETHER THE NEXT ROOM IS THE START OR THE END ROOM*/
 			if (!ft_strcmp(s, "##start"))
 				type = 1;
 			if (!ft_strcmp(s, "##end"))
 				type = 2;
 			free(s);
 		}
-		if (ft_find_index(s, ' ') < 0)
+		/*EXIT THE LOOP IF THERE ARE NO SPACES IN THE LINE*/
+		if (ft_find_index(s, ' ') == -1)
 			break ;
+		/*ADD A NEW ROOM TO THE END OF THE LINKED LIST OF ROOMS AND INCREMENT THE NUMBER OF ROOMS*/
 		append_head(&head, s, type);
 		num_rooms++;
 		free(s);
 	}
-
+ 
 	arr_rooms = (t_room **)malloc(sizeof(t_room *) * (num_rooms + 1));
 	i = 0;
+	/*FOR EVERY ROOM SET AN INDEX OF ARR_ROOMS TO POINT TO THAT ROOMS*/
 	while (head)
 	{
 		arr_rooms[i] = head;
@@ -429,16 +594,22 @@ int		main()
 	arr_rooms[i] = NULL;
 
 	/*SET LINKS*/
+	/*STR TO STORE ALL THE LINKS SEPERATED BY SPACES*/
 	links = ft_strnew(1024);
+	/*IF THE LAST LINE READ IN THE PREVIOUS SECTIONS IS NOT A COMMENT*/
 	if (s[0] != '#')
 	{
+		/*INCREMENT THE NUMBER OF LINKS FOR BOTH ROOMS THAT THE LINE SPECIFIES*/
 		inc_num_links(arr_rooms, s);
+		/*APPEND LINKS WITH THE CURRENT LINE FOLLOWED BY A SPACE*/
 		links = str_cat_char(links, s, ' ');
 		//ft_putendl(links);
 	}
 	free(s);
+	/*LOOP THROUGH THE REMAINING LINES ON STDIN*/
 	while (1)
 	{
+		/*SKIP OVER COMMENTS*/
 		while (1)
 		{
 			get_next_line(0, &s);
@@ -447,20 +618,26 @@ int		main()
 				break ;
 			free(s);
 		}
+		/*EXIT LOOP IF THE LAST LINE HAS BEEN FOUND*/
 		if (!s[0])
 			break ;
 		inc_num_links(arr_rooms, s);
 		str_cat_char(links, s, ' ');
 		free(s);
 	}
+	/*SPLIT EACH LINK INTO AN INDEX OF AN ARRAY OF STRINGS*/
 	arr_links = ft_strsplit(links, ' ');
 	free(links);
 	i = -1;
+	/*MALLOC EACH ARRAY IN EVERY ROOM TO THE REQUIRED SIZE AND SET EACH ROOMS LINK VAR TO ZERO TO BE USED LATER*/
 	while (++i < num_rooms)
 	{
 		arr_rooms[i]->arr_links = (t_room **)malloc(sizeof(t_room *) * arr_rooms[i]->links);
 		arr_rooms[i]->links = 0;
 	}
+	/*FOR EVERY LINK IN ARR_LINKS MAKE THE CORRESPONDING ROOMS POINT TO EACH OTHER*/
 	set_links(arr_rooms, arr_links);
+
+	/*FIND AND EXECUTE PATH*/
 	find_path(arr_rooms, num_ants, num_rooms);
 }

@@ -1,0 +1,31 @@
+
+//create a new branch
+git branch branch_name
+//switch to the new branch
+git checkout branch_name
+
+//Add all files to the stage
+git add .
+//Commit files 
+git commit -m "Description of this commit"
+//Optional (but recommended) push local branch to remote
+git push origin branch_name
+
+//once you're ready to merge
+git fetch
+
+//rebase your commits into one commit
+git rebase -i origin/master
+
+//Checkout the master branch
+git checkout master
+//Merge jc_feature_name INTO master
+git merge jc_feature_name
+
+//Push your local master branch to remote
+git push origin master
+
+//Delete remote feature branch (the colon is important!)
+git push origin :jc_feature_name
+//Delete local branch
+git branch -d jc_feature_name

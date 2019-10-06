@@ -1,20 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   get_ants.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jsarkis <jsarkis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/22 19:37:40 by jsarkis           #+#    #+#             */
-/*   Updated: 2019/10/06 13:08:25 by jsarkis          ###   ########.fr       */
+/*   Created: 2019/09/14 10:07:18 by jsarkis           #+#    #+#             */
+/*   Updated: 2019/09/19 14:38:00 by jsarkis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../lem_in_js.h"
 
-void	ft_putstr_fd(char const *str, int fd)
+int	get_ants(void)
 {
-	if (!str || !fd)
-		return ;
-	write(fd, str, ft_strlen(str));
+	t_str	s;
+	int		num_ants;
+
+	while (1)
+	{
+		get_next_line(0, &s);
+		ft_putendl(s);
+		if (s[0] != '#')
+			break ;
+		free(s);
+	}
+	if (!is_integer(s))
+		print_err_msg("Error: Number of ants not a valid integer");
+	num_ants = ft_atoi(s);
+	free(s);
+	return (num_ants);
 }

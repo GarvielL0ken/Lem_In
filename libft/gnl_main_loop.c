@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   gnl_main_loop.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsarkis <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: jsarkis <jsarkis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/09 09:52:04 by jsarkis           #+#    #+#             */
-/*   Updated: 2019/07/09 11:04:51 by jsarkis          ###   ########.fr       */
+/*   Updated: 2019/10/06 13:38:05 by jsarkis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	gnl_main_loop(const int fd, char **line, char **buff)
 	int end_of_line;
 	int	read_ret;
 
-	*line = ft_strnew(1000 * 100);
+	*line = ft_strnew(1024);
 	i = 0;
 	end_of_line = 0;
 	while (!end_of_line)

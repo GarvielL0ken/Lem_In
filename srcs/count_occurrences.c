@@ -1,20 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   count_occurrences.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jsarkis <jsarkis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/22 19:37:40 by jsarkis           #+#    #+#             */
-/*   Updated: 2019/10/06 13:08:25 by jsarkis          ###   ########.fr       */
+/*   Created: 2019/09/19 13:07:21 by bswanepo          #+#    #+#             */
+/*   Updated: 2019/09/19 14:45:36 by jsarkis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../lem_in_js.h"
 
-void	ft_putstr_fd(char const *str, int fd)
+int	count_occurrences(t_str s, char c)
 {
-	if (!str || !fd)
-		return ;
-	write(fd, str, ft_strlen(str));
+	int i;
+	int count;
+
+	count = 0;
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == c)
+			count++;
+		i++;
+	}
+	return (count);
+}
+
+int	is_integer(t_str s)
+{
+	int i;
+
+	i = 0;
+	while (s[++i])
+	{
+		if (s[i] < '0' || '9' < s[i])
+			return (0);
+		i++;
+	}
+	return (1);
 }
