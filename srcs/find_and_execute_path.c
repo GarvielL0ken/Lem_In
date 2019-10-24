@@ -285,6 +285,7 @@ int			num_moves(t_path_set path_set, t_path *head, int num_ants, t_room **arr_ro
 		}
 		j++;
 	}
+	free(arr_lengths);
 	return (j + min - 1);
 }
 
