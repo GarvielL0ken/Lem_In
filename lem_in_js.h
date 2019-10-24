@@ -6,7 +6,7 @@
 /*   By: jsarkis <jsarkis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/02 15:05:05 by jsarkis           #+#    #+#             */
-/*   Updated: 2019/10/06 12:16:09 by jsarkis          ###   ########.fr       */
+/*   Updated: 2019/10/24 16:45:19 by jsarkis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,5 +86,7 @@ void				set_links(t_room **arr_rooms, t_str *arr_links);
 int					is_integer(t_str s);
 
 int					count_occurrences(t_str s, char c);
+
+void				validate_rooms(t_room **arr_rooms, t_data data);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jsarkis <jsarkis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/17 11:48:10 by jsarkis           #+#    #+#             */
-/*   Updated: 2019/10/06 14:53:36 by jsarkis          ###   ########.fr       */
+/*   Updated: 2019/10/24 16:59:12 by jsarkis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,35 +248,47 @@ int			collide(t_path_set path_set, t_path *head, t_path *next)
 	return (0);
 }
 
-int			num_moves(t_path_set path_set, t_path *head, int num_ants)
+int			num_moves(t_path_set path_set, t_path *head, int num_ants, t_room **arr_rooms)
 {
 	t_path	*current;
-	int		min;
-	int		num_paths_to_use;
+	t_uint	*arr_lengths;
 	int		i;
 	int		j;
+	int		min;
 
-	current = head;
-	num_paths_to_use = 1;
-	i = 1;
-	j = 0;
-	while (j++ < path_set.arr_paths[0])
-		current = current->next;
-	min = current->path_length;
+	arr_lengths = (t_uint *)malloc(sizeof(t_uint) * path_set.num_paths);
+	i = 0;
+	min = -1;
 	while (i < path_set.num_paths)
 	{
+		j = 0;
+		current = head;
 		while (j++ < path_set.arr_paths[i])
 			current = current->next;
-		if (current->path_length < min && current->path_length < num_ants + 1)
+		if (current->path_length < min || min == -1)
 			min = current->path_length;
-		if (current->path_length < num_ants + 1)
-			num_paths_to_use++;
+		print_path(current, arr_rooms);
+		arr_lengths[i] = current->path_length;
 		i++;
 	}
-	return ((num_ants / num_paths_to_use) + min - 1);
+	printf("min = %d\nnum_ants = %d\n", min, num_ants);
+	for (i = 0; i < path_set.num_paths; i++)
+		printf("%d, ", arr_lengths[i]);
+	printf("\n");
+	j = 0;
+	while (num_ants > 0)
+	{
+		for (i = 0; i < path_set.num_paths; i++)
+		{
+			if (arr_lengths[i] <= (t_uint)num_ants || arr_lengths[i] == (t_uint) min)
+				num_ants--;
+		}
+		j++;
+	}
+	return (j + min - 1);
 }
 
-t_path_set	find_shortest_set(t_path *head, int num_ants, int max_num_paths)
+t_path_set	find_shortest_set(t_path *head, int num_ants, int max_num_paths, t_room **arr_rooms)
 {
 	t_path_set	best;
 	t_path_set	path_set;
@@ -308,7 +320,8 @@ t_path_set	find_shortest_set(t_path *head, int num_ants, int max_num_paths)
 			next = next->next;
 			j++;
 		}
-		path_set.num_moves = num_moves(path_set, head, num_ants);
+		path_set.num_moves = num_moves(path_set, head, num_ants, arr_rooms);
+		printf("num_moves = %d\n\n", path_set.num_moves);
 		if (path_set.num_moves < best.num_moves)
 		{
 			j = -1;
@@ -359,6 +372,7 @@ void		print_moves(t_path_set path_set, t_path **arr_paths, int num_ants, t_room 
 
 	move_number = 0;
 	line = ft_strnew(STR_SIZE);
+	//printf("num_moves = %d\n", path_set.num_moves);
 	while (++move_number <= path_set.num_moves)
 	{
 		line_length = 0;
@@ -377,6 +391,7 @@ void		print_moves(t_path_set path_set, t_path **arr_paths, int num_ants, t_room 
 		line[0] = 0;
 		ft_putchar('\n');
 	}
+	//ft_putstr("exit print_moves\n");
 	free(line);
 }
 
@@ -401,6 +416,8 @@ void		move_ants(t_path_set path_set, t_path *head, int num_ants, t_room **arr_ro
 		i++;
 	}
 	print_moves(path_set, arr_paths, num_ants, arr_rooms);
+	//ft_putstr("exit move_ants\n");
+	//free_arr((void **)arr_paths);
 	free(arr_paths);
 }
 
@@ -435,8 +452,10 @@ void		find_path(t_room **arr_rooms, int num_ants, int num_rooms)
 			run = 0;
 	}
 	remove_invalid_paths(&head);
-	path_set = find_shortest_set(head, num_ants, max_num_paths);
+	path_set = find_shortest_set(head, num_ants, max_num_paths, arr_rooms);
+	//ft_putstr("boi\n");
 	move_ants(path_set, head, num_ants, arr_rooms);
+	//ft_putstr("noi\n");
 	free(path_set.arr_paths);
 	while (head)
 	{
