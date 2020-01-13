@@ -6,7 +6,7 @@
 /*   By: jsarkis <jsarkis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/17 11:07:36 by jsarkis           #+#    #+#             */
-/*   Updated: 2019/10/06 14:30:32 by jsarkis          ###   ########.fr       */
+/*   Updated: 2020/01/13 13:11:21 by jsarkis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,9 @@ void	append_head(t_room **head, t_str s, unsigned int type)
 		*head = new;
 }
 
-void	initialize_rooms(t_data *data, t_room ***arr_rooms)
+t_room	**initialize_rooms(t_data *data)
 {
+	t_room			**arr_rooms;
 	t_room			*head;
 	unsigned int	type;
 	int				i;
@@ -84,13 +85,15 @@ void	initialize_rooms(t_data *data, t_room ***arr_rooms)
 	}
 	if (!data->num_rooms)
 		print_err_msg("Error: No rooms specified");
-	*arr_rooms = (t_room **)malloc(sizeof(t_room *) * (data->num_rooms + 1));
+	arr_rooms = (t_room **)malloc(sizeof(t_room *) * (data->num_rooms + 1));
 	i = 0;
 	while (head)
 	{
-		(*arr_rooms)[i] = head;
+		arr_rooms[i] = head;
 		head = head->next;
 		i++;
 	}
-	(*arr_rooms)[i] = NULL;
+	free(head);
+	arr_rooms[i] = NULL;
+	return (arr_rooms);
 }

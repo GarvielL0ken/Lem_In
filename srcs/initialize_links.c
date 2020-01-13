@@ -6,7 +6,7 @@
 /*   By: jsarkis <jsarkis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 11:14:33 by jsarkis           #+#    #+#             */
-/*   Updated: 2019/10/06 13:42:02 by jsarkis          ###   ########.fr       */
+/*   Updated: 2020/01/13 12:49:24 by jsarkis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ t_str	*read_links(t_data *data, t_room ***arr_rooms)
 		str_cat_char(&links, data->s, ' ');
 		free(data->s);
 	}
+	free(data->s);
 	arr_links = ft_strsplit(links, ' ');
 	free(links);
 	return (arr_links);

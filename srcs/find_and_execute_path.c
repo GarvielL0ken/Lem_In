@@ -6,7 +6,7 @@
 /*   By: jsarkis <jsarkis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/17 11:48:10 by jsarkis           #+#    #+#             */
-/*   Updated: 2019/10/24 16:59:12 by jsarkis          ###   ########.fr       */
+/*   Updated: 2020/01/13 12:41:41 by jsarkis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -452,11 +452,12 @@ void		find_path(t_room **arr_rooms, int num_ants, int num_rooms)
 		if (propagated(head, max_num_paths, i))
 			run = 0;
 	}
+	printf("paths:\n");
+	print_paths(head, arr_rooms);
+	printf("\n");
 	remove_invalid_paths(&head);
 	path_set = find_shortest_set(head, num_ants, max_num_paths, arr_rooms);
-	//ft_putstr("boi\n");
 	move_ants(path_set, head, num_ants, arr_rooms);
-	//ft_putstr("noi\n");
 	free(path_set.arr_paths);
 	while (head)
 	{
