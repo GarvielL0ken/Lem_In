@@ -6,7 +6,7 @@
 /*   By: jsarkis <jsarkis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/02 15:05:05 by jsarkis           #+#    #+#             */
-/*   Updated: 2019/10/24 16:45:19 by jsarkis          ###   ########.fr       */
+/*   Updated: 2019/10/24 17:40:55 by jsarkis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ typedef	struct		s_data
 	t_str			s;
 }					t_data;
 
-void				initialize_rooms(t_data *data, t_room ***arr_rooms);
+t_room				**initialize_rooms(t_data *data);
 
 void				free_arr(void	**arr);
 
