@@ -6,7 +6,7 @@
 /*   By: jsarkis <jsarkis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/02 18:21:21 by jsarkis           #+#    #+#             */
-/*   Updated: 2019/10/24 16:45:37 by jsarkis          ###   ########.fr       */
+/*   Updated: 2020/03/19 23:37:04 by jsarkis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	check_coordinates(t_room **arr_rooms)
 		while (arr_rooms[j])
 		{
 			if (x == arr_rooms[j]->x && y == arr_rooms[j]->y)
-				print_err_msg("Error: Rooms have the same co-ordinates");
+				ft_putstr("Error: Rooms have the same co-ordinates");
 			j++;
 		}
 		i++;

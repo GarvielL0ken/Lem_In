@@ -6,7 +6,7 @@
 /*   By: jsarkis <jsarkis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 09:34:20 by jsarkis           #+#    #+#             */
-/*   Updated: 2020/01/13 13:13:08 by jsarkis          ###   ########.fr       */
+/*   Updated: 2020/03/19 23:46:06 by jsarkis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ int		main(void)
 	arr_links = read_links(&data, &arr_rooms);
 	malloc_links(&arr_rooms, data);
 	set_links(arr_rooms, arr_links);
-	find_path(arr_rooms, data.num_ants, data.num_rooms);
+	find_path(arr_rooms, data);
 	free_arr((void **)arr_links);
-	
+
 	//For Testing for memory leaks
 	//while (get_next_line(0, &(data.s)));
 	//while(1);

@@ -6,7 +6,7 @@
 /*   By: jsarkis <jsarkis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/02 15:05:05 by jsarkis           #+#    #+#             */
-/*   Updated: 2020/03/19 23:11:11 by jsarkis          ###   ########.fr       */
+/*   Updated: 2020/03/19 23:51:00 by jsarkis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef	struct		s_data
 {
 	t_uint			num_ants;
 	t_uint			num_rooms;
+	t_uint			max_num_paths;
 	t_uint			room_1;
 	t_uint			room_2;
 	t_str			s;
@@ -67,7 +68,7 @@ t_room				**initialize_rooms(t_data *data);
 
 void				free_arr(void	**arr);
 
-void				find_path(t_room **arr_rooms, int num_ants, int num_rooms);
+void				find_path(t_room **arr_rooms, t_data);
 
 int					get_ants(void);
 
@@ -75,9 +76,9 @@ t_path				*new_head(t_room *room, int num_rooms);
 
 void				new_path(t_path *path, int i);
 
-int					num_moves(t_path_set path_set, t_path *head, int num_ants, t_room **arr_rooms);
+int					num_moves(t_path_set path_set, t_path *head, int num_ants);
 
-int			num_valid_paths(t_path *path, int max_nam_paths);
+int					num_valid_paths(t_path *path, int max_nam_paths);
 
 void				malloc_links(t_room ***arr_rooms, t_data data);
 

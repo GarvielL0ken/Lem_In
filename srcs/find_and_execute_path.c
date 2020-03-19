@@ -6,7 +6,7 @@
 /*   By: jsarkis <jsarkis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/17 11:48:10 by jsarkis           #+#    #+#             */
-/*   Updated: 2020/03/19 23:12:31 by jsarkis          ###   ########.fr       */
+/*   Updated: 2020/03/20 00:02:55 by jsarkis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void		remove_invalid_paths(t_path **head)
 	}
 }
 
-t_path_set	find_shortest_set(t_path *head, int num_ants, int max_num_paths, t_room **arr_rooms)
+t_path_set	find_shortest_set(t_path *head, t_data data)
 {
 	t_path_set	best;
 	t_path_set	path_set;
@@ -92,11 +92,11 @@ t_path_set	find_shortest_set(t_path *head, int num_ants, int max_num_paths, t_ro
 	int			i;
 	int			j;
 
-	best.arr_paths = (t_ustr)malloc(max_num_paths);
+	best.arr_paths = (t_ustr)malloc(data.max_num_paths);
 	best.arr_paths[0] = 0;
-	best.num_moves = head->path_length + num_ants - 1;
+	best.num_moves = head->path_length + data.num_ants - 1;
 	best.num_paths = 1;
-	path_set.arr_paths = (t_ustr)malloc(max_num_paths);
+	path_set.arr_paths = (t_ustr)malloc(data.max_num_paths);
 	current = head;
 	i = 0;
 	while (current)
@@ -115,8 +115,8 @@ t_path_set	find_shortest_set(t_path *head, int num_ants, int max_num_paths, t_ro
 			next = next->next;
 			j++;
 		}
-		path_set.num_moves = num_moves(path_set, head, num_ants, arr_rooms);
-		printf("num_moves = %d\n\n", path_set.num_moves);
+		path_set.num_moves = num_moves(path_set, head, data.num_ants);
+		//printf("num_moves = %d\n\n", path_set.num_moves);
 		if (path_set.num_moves < best.num_moves)
 		{
 			j = -1;
@@ -132,42 +132,45 @@ t_path_set	find_shortest_set(t_path *head, int num_ants, int max_num_paths, t_ro
 	return (best);
 }
 
-void		find_path(t_room **arr_rooms, int num_ants, int num_rooms)
+t_path		generate_paths(t_room **arr_rooms, t_data *data)
 {
-	t_path_set	path_set;
 	t_path		*head;
-	t_path		*temp;
-	int			max_num_paths;
-	int			i;
-	int			run;
+	t_uint		i;
+	t_uint		run;
 
-	max_num_paths = num_ants;
 	i = -1;
 	while (arr_rooms[++i])
 	{
-		if (arr_rooms[i]->type && arr_rooms[i]->links < max_num_paths)
-			max_num_paths = arr_rooms[i]->links;
-		if (max_num_paths <= 0)
+		if (arr_rooms[i]->type && arr_rooms[i]->links < data->max_num_paths)
+			data.max_num_paths = arr_rooms[i]->links;
+		if (data.max_num_paths <= 0)
 			print_err_msg("Error: No solution");
 		if (arr_rooms[i]->type == 1)
-			head = new_head(arr_rooms[i], num_rooms);
+			head = new_head(arr_rooms[i], data->num_rooms);
 	}
-	head->current->visited = max_num_paths;
 	run = 1;
 	i = 0;
 	while (run)
 	{
-		propagate_paths(head, max_num_paths, i);
+		propagate_paths(head, data->max_num_paths, i);
 		i++;
-		if (propagated(head, max_num_paths, i))
+		if (propagated(head, data->max_num_paths, i))
 			run = 0;
 	}
-	printf("paths:\n");
-	print_paths(head, arr_rooms);
-	printf("\n");
+	return (head);
+}
+
+void		find_path(t_room **arr_rooms, t_data data)
+{
+	t_path_set	path_set;
+	t_path		*head;
+	t_path		*temp;
+
+	data.max_num_paths = data.num_ants;
+	head = generate_paths(arr_rooms, data);
 	remove_invalid_paths(&head);
-	path_set = find_shortest_set(head, num_ants, max_num_paths, arr_rooms);
-	move_ants(path_set, head, num_ants, arr_rooms);
+	path_set = find_shortest_set(head, data);
+	move_ants(path_set, head, data.num_ants, arr_rooms);
 	free(path_set.arr_paths);
 	while (head)
 	{

@@ -6,13 +6,13 @@
 /*   By: jsarkis <jsarkis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/19 23:22:00 by jsarkis           #+#    #+#             */
-/*   Updated: 2020/03/19 23:22:00 by jsarkis          ###   ########.fr       */
+/*   Updated: 2020/03/19 23:48:47 by jsarkis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../lem_in_js.h"
 
-int			num_moves(t_path_set path_set, t_path *head, int num_ants, t_room **arr_rooms)
+int			num_moves(t_path_set path_set, t_path *head, int num_ants)
 {
 	t_path	*current;
 	t_uint	*arr_lengths;
@@ -31,7 +31,6 @@ int			num_moves(t_path_set path_set, t_path *head, int num_ants, t_room **arr_ro
 			current = current->next;
 		if (current->path_length < min || min == -1)
 			min = current->path_length;
-		print_path(current, arr_rooms);
 		arr_lengths[i] = current->path_length;
 		i++;
 	}

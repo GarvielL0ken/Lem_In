@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem_in_js.h"
+#include "../lem_in_js.h"
 
 t_path		*new_head(t_room *room, int num_rooms)
 {
