@@ -26,6 +26,8 @@ int		main(void)
 	set_links(arr_rooms, arr_links);
 	find_path(arr_rooms, data.num_ants, data.num_rooms);
 	free_arr((void **)arr_links);
-	while (get_next_line(0, &(data.s)));
+	
+	//For Testing for memory leaks
+	//while (get_next_line(0, &(data.s)));
 	//while(1);
 }
