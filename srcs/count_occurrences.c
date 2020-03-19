@@ -6,7 +6,7 @@
 /*   By: jsarkis <jsarkis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 13:07:21 by bswanepo          #+#    #+#             */
-/*   Updated: 2019/09/19 14:45:36 by jsarkis          ###   ########.fr       */
+/*   Updated: 2020/03/19 20:06:50 by jsarkis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	is_integer(t_str s)
 	int i;
 
 	i = 0;
-	while (s[++i])
+	while (s[i])
 	{
 		if (s[i] < '0' || '9' < s[i])
 			return (0);
