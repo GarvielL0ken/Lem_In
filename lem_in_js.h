@@ -6,7 +6,7 @@
 /*   By: jsarkis <jsarkis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/02 15:05:05 by jsarkis           #+#    #+#             */
-/*   Updated: 2019/10/24 17:40:55 by jsarkis          ###   ########.fr       */
+/*   Updated: 2020/03/19 23:11:11 by jsarkis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,10 @@ typedef	struct		s_data
 	t_str			s;
 }					t_data;
 
+void				append_path(t_path *path, int next_link);
+
+int					collide(t_path_set path_set, t_path *head, t_path *next);
+
 t_room				**initialize_rooms(t_data *data);
 
 void				free_arr(void	**arr);
@@ -67,7 +71,19 @@ void				find_path(t_room **arr_rooms, int num_ants, int num_rooms);
 
 int					get_ants(void);
 
+t_path				*new_head(t_room *room, int num_rooms);
+
+void				new_path(t_path *path, int i);
+
+int					num_moves(t_path_set path_set, t_path *head, int num_ants, t_room **arr_rooms);
+
+int			num_valid_paths(t_path *path, int max_nam_paths);
+
 void				malloc_links(t_room ***arr_rooms, t_data data);
+
+void				move_ants(t_path_set path_set, t_path *head, int num_ants, 							t_room **arr_rooms);
+
+int					path_can_be_expanded(t_path *head, int max_num_path);
 
 void				print_err_msg(const t_str err_msg);
 
@@ -79,6 +95,8 @@ void				print_paths(t_path *head, t_room **arr_rooms);
 
 void				print_rooms(t_room *head);
 
+int					propagated(t_path *head, int max_num_paths, int path_length);
+
 t_str				*read_links(t_data *data, t_room ***arr_rooms);
 
 void				set_links(t_room **arr_rooms, t_str *arr_links);
@@ -89,4 +107,7 @@ int					count_occurrences(t_str s, char c);
 
 void				validate_rooms(t_room **arr_rooms, t_data data);
 
+int					valid_path(t_path *path, unsigned int max_num_paths, int i);
+
+int					visited(t_path *path, int next_link);
 #endif
