@@ -55,12 +55,15 @@ typedef	struct		s_data
 	t_uint			num_ants;
 	t_uint			num_rooms;
 	t_uint			max_num_paths;
+	t_uint			path_length;
 	t_uint			room_1;
 	t_uint			room_2;
 	t_str			s;
 }					t_data;
 
 void				append_path(t_path *path, int next_link);
+
+int 				add_new_paths(t_path *path, t_data *data);
 
 int					collide(t_path_set path_set, t_path *head, t_path *next);
 

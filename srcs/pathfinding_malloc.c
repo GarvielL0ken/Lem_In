@@ -64,3 +64,22 @@ void		new_path(t_path *path, int i)
 		new->current->visited++;
 	}
 }
+
+int 		add_new_paths(t_path *path, t_data *data)
+{
+	t_uint	i;
+	t_uint	num_paths;
+
+	num_paths = num_valid_paths(path, data->max_num_paths);
+	i = 0;
+	while (i < path->current->links && num_paths)
+	{
+		if (valid_path(path, data->max_num_paths, i))
+		{
+			new_path(path, i);
+			num_paths--;
+		}
+		i++;
+	}
+	return (i);
+}
