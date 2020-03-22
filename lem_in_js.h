@@ -71,6 +71,8 @@ t_room				**initialize_rooms(t_data *data);
 
 void				free_arr(void	**arr);
 
+t_path 				*remove_path(t_path *current)
+
 void				find_path(t_room **arr_rooms, t_data);
 
 int					get_ants(void);

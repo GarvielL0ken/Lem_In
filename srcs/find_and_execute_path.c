@@ -61,12 +61,7 @@ void		remove_invalid_paths(t_path **head)
 	while (current->next)
 	{
 		if (current->next->current->type < 2)
-		{
-			temp = current->next;
-			current->next = current->next->next;
-			free(temp->arr_path);
-			free(temp);
-		}
+			current->next = remove_path(current);
 		else
 			current = current->next;
 	}
