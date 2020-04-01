@@ -20,7 +20,7 @@ void		propagate_paths(t_path *head, t_data *data)
 	path = head;
 	while (path)
 	{
-		if (path->path_length == data->path_length && path->current->type < 2)
+		if (path->path_length == data->path_length && path->current->type != END)
 		{
 			i = add_new_paths(path, data);
 			while (i < path->current->links)
@@ -48,7 +48,7 @@ void		remove_invalid_paths(t_path **head)
 	current = *head;
 	if (!current->next)
 		return ;
-	while (current->current->type < 2)
+	while (current->current->type != END)
 	{
 		temp = current->next;
 		free(current->arr_path);
@@ -60,7 +60,7 @@ void		remove_invalid_paths(t_path **head)
 	}
 	while (current->next)
 	{
-		if (current->next->current->type < 2)
+		if (current->next->current->type != END)
 			current->next = remove_path(current);
 		else
 			current = current->next;
@@ -129,7 +129,7 @@ t_path		*generate_paths(t_room **arr_rooms, t_data *data)
 			data->max_num_paths = arr_rooms[i]->links;
 		if (data->max_num_paths <= 0)
 			print_err_msg("Error: No solution");
-		if (arr_rooms[i]->type == 1)
+		if (arr_rooms[i]->type == START)
 			head = new_head(arr_rooms[i], data->num_rooms);
 	}
 	run = 1;

@@ -29,9 +29,9 @@ void	check_start_end_rooms(t_room **arr_rooms, t_data data)
 	end = 0;
 	while (i < data.num_rooms)
 	{
-		if (arr_rooms[i]->type == 1)
+		if (arr_rooms[i]->type == START)
 			start++;
-		if (arr_rooms[i]->type == 2)
+		if (arr_rooms[i]->type == END)
 			end++;
 		if (start > 1 || end > 1)
 			print_err_msg("Error: Multiple start or end rooms");

@@ -68,9 +68,9 @@ t_room	**initialize_rooms(t_data *data)
 			if (data->s[0] != '#')
 				break ;
 			if (!ft_strcmp(data->s, "##start"))
-				type = 1;
+				type = START;
 			if (!ft_strcmp(data->s, "##end"))
-				type = 2;
+				type = END;
 			free(data->s);
 		}
 		if (ft_find_index(data->s, ' ') == -1)

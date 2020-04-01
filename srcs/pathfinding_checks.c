@@ -18,7 +18,7 @@ int			path_can_be_expanded(t_path *head, int max_num_path)
 
 	if (!head)
 		return (-1);
-	if (head->current->type < 2)
+	if (head->current->type != END)
 	{
 		i = 0;
 		while (i < head->current->links)
@@ -42,7 +42,7 @@ int			propagated(t_path *head, int max_num_paths, int path_length)
 	{
 		if (path_can_be_expanded(head, max_num_paths))
 			valid = 0;
-		if (head->current->type == 2 && head->path_length == path_length)
+		if (head->current->type == END && head->path_length == path_length)
 			num_paths_found++;
 		if (num_paths_found == max_num_paths)
 			return (1);
@@ -55,7 +55,7 @@ int			valid_path(t_path *path, unsigned int max_num_paths, int i)
 {
 	unsigned int	num_visits;
 
-	if (path->current->arr_links[i]->type == 2)
+	if (path->current->arr_links[i]->type == END)
 		return (1);
 	num_visits = path->current->arr_links[i]->visited;
 	if (num_visits < max_num_paths && !visited(path, i))

@@ -17,6 +17,9 @@
 # include <stdio.h>
 # define CLEAR "\e[1;1H\e[2J"
 # define STR_SIZE 1024
+# define START 1
+# define END 2
+
 
 typedef char			*t_str;
 typedef unsigned char	*t_ustr;
