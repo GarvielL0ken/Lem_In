@@ -47,7 +47,6 @@ void		print_moves(t_path_set path_set, t_path **arr_paths, int num_ants, t_room 
 
 	move_number = 0;
 	line = ft_strnew(STR_SIZE);
-	//printf("num_moves = %d\n", path_set.num_moves);
 	while (++move_number <= path_set.num_moves)
 	{
 		line_length = 0;
@@ -66,7 +65,6 @@ void		print_moves(t_path_set path_set, t_path **arr_paths, int num_ants, t_room 
 		line[0] = 0;
 		ft_putchar('\n');
 	}
-	//ft_putstr("exit print_moves\n");
 	free(line);
 }
 
@@ -91,7 +89,5 @@ void		move_ants(t_path_set path_set, t_path *head, int num_ants, t_room **arr_ro
 		i++;
 	}
 	print_moves(path_set, arr_paths, num_ants, arr_rooms);
-	//ft_putstr("exit move_ants\n");
-	//free_arr((void **)arr_paths);
 	free(arr_paths);
 }
