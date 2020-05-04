@@ -6,11 +6,11 @@
 /*   By: jsarkis <jsarkis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/02 18:21:21 by jsarkis           #+#    #+#             */
-/*   Updated: 2020/03/19 23:37:04 by jsarkis          ###   ########.fr       */
+/*   Updated: 2020/05/04 11:42:39 by jsarkis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../lem_in_js.h"
+#include "../lem_in.h"
 
 void	print_err_msg(const t_str err_msg)
 {

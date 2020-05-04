@@ -6,11 +6,11 @@
 /*   By: jsarkis <jsarkis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/17 11:56:43 by jsarkis           #+#    #+#             */
-/*   Updated: 2019/09/19 12:14:24 by jsarkis          ###   ########.fr       */
+/*   Updated: 2020/05/04 11:42:34 by jsarkis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../lem_in_js.h"
+#include "../lem_in.h"
 
 void	print_rooms(t_room *head)
 {
@@ -43,7 +43,7 @@ void	print_links(t_room **arr_rooms)
 
 void	print_path(t_path *head, t_room **arr_rooms)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < head->path_length)

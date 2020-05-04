@@ -6,11 +6,11 @@
 /*   By: jsarkis <jsarkis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/17 11:36:05 by jsarkis           #+#    #+#             */
-/*   Updated: 2019/09/19 12:17:47 by jsarkis          ###   ########.fr       */
+/*   Updated: 2020/05/04 11:42:42 by jsarkis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../lem_in_js.h"
+#include "../lem_in.h"
 
 void	free_arr(void **arr)
 {

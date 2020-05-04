@@ -6,11 +6,11 @@
 /*   By: jsarkis <jsarkis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 10:07:18 by jsarkis           #+#    #+#             */
-/*   Updated: 2019/09/19 14:38:00 by jsarkis          ###   ########.fr       */
+/*   Updated: 2020/05/04 11:42:22 by jsarkis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../lem_in_js.h"
+#include "../lem_in.h"
 
 int	get_ants(void)
 {

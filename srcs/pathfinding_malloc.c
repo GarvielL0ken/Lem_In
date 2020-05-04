@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../lem_in_js.h"
+#include "../lem_in.h"
 
 t_path		*new_head(t_room *room, int num_rooms)
 {
@@ -34,7 +34,7 @@ t_path		*new_head(t_room *room, int num_rooms)
 
 void		append_path(t_path *path, int next_link)
 {
-	unsigned int	index;
+	t_uint	index;
 
 	index = path->current->arr_links[next_link]->index;
 	path->arr_path[path->path_length] = index;
@@ -65,7 +65,7 @@ void		new_path(t_path *path, int i)
 	}
 }
 
-int 		add_new_paths(t_path *path, t_data *data)
+int			add_new_paths(t_path *path, t_data *data)
 {
 	t_uint	i;
 	t_uint	num_paths;
@@ -82,4 +82,15 @@ int 		add_new_paths(t_path *path, t_data *data)
 		i++;
 	}
 	return (i);
+}
+
+t_path_set	initialize_best(t_data data, t_path *head)
+{
+	t_path_set	best;
+
+	best.arr_paths = (t_ustr)malloc(data.max_num_paths);
+	best.arr_paths[0] = 0;
+	best.num_moves = head->path_length + data.num_ants - 1;
+	best.num_paths = 1;
+	return (best);
 }

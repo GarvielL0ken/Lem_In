@@ -6,13 +6,13 @@
 /*   By: jsarkis <jsarkis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/19 23:22:00 by jsarkis           #+#    #+#             */
-/*   Updated: 2020/04/03 09:25:03 by jsarkis          ###   ########.fr       */
+/*   Updated: 2020/05/04 11:43:30 by jsarkis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../lem_in_js.h"
+#include "../lem_in.h"
 
-t_uint		*calculate_lengths(t_path_set path_set, t_path *head, t_uint *min)
+t_uint	*calculate_lengths(t_path_set path_set, t_path *head, t_uint *min)
 {
 	t_path	*current;
 	t_uint	*arr_lengths;
@@ -38,7 +38,7 @@ t_uint		*calculate_lengths(t_path_set path_set, t_path *head, t_uint *min)
 	return (arr_lengths);
 }
 
-int			num_moves(t_path_set path_set, t_path *head, int num_ants)
+int		num_moves(t_path_set path_set, t_path *head, int num_ants)
 {
 	t_uint	*arr_lengths;
 	t_uint	i;
@@ -60,7 +60,7 @@ int			num_moves(t_path_set path_set, t_path *head, int num_ants)
 	return (j + min - 1);
 }
 
-int			num_valid_paths(t_path *path, int max_nam_paths)
+int		num_valid_paths(t_path *path, int max_nam_paths)
 {
 	int	i;
 	int	num_paths;

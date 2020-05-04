@@ -6,11 +6,23 @@
 /*   By: jsarkis <jsarkis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 11:14:33 by jsarkis           #+#    #+#             */
-/*   Updated: 2020/01/13 12:49:24 by jsarkis          ###   ########.fr       */
+/*   Updated: 2020/05/04 11:42:54 by jsarkis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../lem_in_js.h"
+#include "../lem_in.h"
+
+void	compare_name(t_data *data, t_str *rooms, t_str name)
+{
+	data->room_1 = 0;
+	data->room_2 = 0;
+	if (ft_strequ(name, rooms[0]))
+		data->room_1++;
+	if (ft_strequ(name, rooms[1]))
+		data->room_2++;
+	if (data->room_1 && data->room_2)
+		print_err_msg("Error: Room links to itself");
+}
 
 void	inc_num_links(t_room **arr_rooms, t_str s)
 {
@@ -18,22 +30,13 @@ void	inc_num_links(t_room **arr_rooms, t_str s)
 	int		found;
 	t_data	data;
 	t_str	*rooms;
-	t_str	name;
 
 	i = 0;
 	rooms = ft_strsplit(s, '-');
 	found = 0;
 	while (arr_rooms[i])
 	{
-		name = arr_rooms[i]->name;
-		data.room_1 = 0;
-		data.room_2 = 0;
-		if (ft_strequ(name, rooms[0]))
-			data.room_1++;
-		if (ft_strequ(name, rooms[1]))
-			data.room_2++;
-		if (data.room_1 && data.room_2)
-			print_err_msg("Error: Room links to itself");
+		compare_name(&data, rooms, arr_rooms[i]->name);
 		if (data.room_1 || data.room_2)
 		{
 			arr_rooms[i]->links += 1;
@@ -69,7 +72,7 @@ t_str	*read_links(t_data *data, t_room ***arr_rooms)
 	t_str	links;
 	t_str	*arr_links;
 
-	links = ft_strnew(1024);
+	links = ft_strnew(STR_SIZE);
 	if (data->s[0] != '#')
 	{
 		inc_num_links(*arr_rooms, data->s);
@@ -78,14 +81,7 @@ t_str	*read_links(t_data *data, t_room ***arr_rooms)
 	free(data->s);
 	while (1)
 	{
-		while (1)
-		{
-			get_next_line(0, &data->s);
-			ft_putendl(data->s);
-			if (data->s[0] != '#')
-				break ;
-			free(data->s);
-		}
+		get_next_link(data);
 		if (!data->s[0])
 			break ;
 		inc_num_links(*arr_rooms, data->s);
@@ -101,13 +97,13 @@ t_str	*read_links(t_data *data, t_room ***arr_rooms)
 void	malloc_links(t_room ***arr_rooms, t_data data)
 {
 	t_uint	i;
-	t_uint	size;
+	t_uint	n;
 
 	i = 0;
 	while (i < data.num_rooms)
 	{
-		size = (*arr_rooms)[i]->links;
-		(*arr_rooms)[i]->arr_links = (t_room **)malloc(sizeof(t_room *) * size);
+		n = (*arr_rooms)[i]->links;
+		(*arr_rooms)[i]->arr_links = (t_room **)malloc(sizeof(t_room *) * n);
 		(*arr_rooms)[i]->links = 0;
 		i++;
 	}

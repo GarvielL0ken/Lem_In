@@ -6,16 +6,16 @@
 /*   By: jsarkis <jsarkis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 13:07:21 by bswanepo          #+#    #+#             */
-/*   Updated: 2020/03/19 20:06:50 by jsarkis          ###   ########.fr       */
+/*   Updated: 2020/05/04 11:42:30 by jsarkis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../lem_in_js.h"
+#include "../lem_in.h"
 
 int	count_occurrences(t_str s, char c)
 {
-	int i;
-	int count;
+	int	i;
+	int	count;
 
 	count = 0;
 	i = 0;
@@ -30,7 +30,7 @@ int	count_occurrences(t_str s, char c)
 
 int	is_integer(t_str s)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (s[i])

@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../lem_in_js.h"
+#include "../lem_in.h"
 
-void		append_line(int ant_number, t_str name, t_str *line, t_uint *line_length)
+void	append_line(int ant_number, t_str name, t_str *line, t_uint *line_length)
 {
 	t_uint	new_length;
 	t_str	str_ant_number;
@@ -37,22 +37,20 @@ void		append_line(int ant_number, t_str name, t_str *line, t_uint *line_length)
 	str_ant_number = NULL;
 }
 
-void		print_moves(t_path_set path_set, t_path **arr_paths, int num_ants, t_room **arr_rooms)
+void	print_moves(t_path_set path_set, t_path **arr_paths, t_data data, t_room **arr_rooms)
 {
 	t_str	line;
 	t_uint	line_length;
-	int	move_number;
-	int	ant_number;
+	t_uint	ant_number;
 	int	index;
 
-	move_number = 0;
 	line = ft_strnew(STR_SIZE);
-	while (++move_number <= path_set.num_moves)
+	while (++data.move_number <= path_set.num_moves)
 	{
 		line_length = 0;
 		ant_number = 0;
-		index = move_number;
-		while (++ant_number <= num_ants && index)
+		index = data.move_number;
+		while (++ant_number <= data.num_ants && index)
 		{
 			if (index <= arr_paths[(ant_number % path_set.num_paths)]->path_length)
 				append_line(ant_number, arr_rooms[arr_paths[(ant_number % path_set.num_paths)]->arr_path[index]]->name, &line, &line_length);
@@ -68,7 +66,7 @@ void		print_moves(t_path_set path_set, t_path **arr_paths, int num_ants, t_room 
 	free(line);
 }
 
-void		move_ants(t_path_set path_set, t_path *head, int num_ants, t_room **arr_rooms)
+void	move_ants(t_path_set path_set, t_path *head, t_data data, t_room **arr_rooms)
 {
 	t_path	**arr_paths;
 	t_path	*temp;
@@ -85,9 +83,8 @@ void		move_ants(t_path_set path_set, t_path *head, int num_ants, t_room **arr_ro
 		while (j++ < path_set.arr_paths[i])
 			temp = temp->next;
 		arr_paths[i] = temp;
-		print_path(arr_paths[i], arr_rooms);
 		i++;
 	}
-	print_moves(path_set, arr_paths, num_ants, arr_rooms);
+	print_moves(path_set, arr_paths, data, arr_rooms);
 	free(arr_paths);
 }

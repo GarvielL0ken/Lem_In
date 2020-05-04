@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../lem_in_js.h"
+#include "../lem_in.h"
 
-int			path_can_be_expanded(t_path *head, int max_num_path)
+int		path_can_be_expanded(t_path *head, int max_num_path)
 {
 	int	i;
 
@@ -31,10 +31,10 @@ int			path_can_be_expanded(t_path *head, int max_num_path)
 	return (0);
 }
 
-int			propagated(t_path *head, int max_num_paths, int path_length)
+int		propagated(t_path *head, int max_num_paths, int path_length)
 {
-	int		num_paths_found;
-	int		valid;
+	int	num_paths_found;
+	int	valid;
 
 	num_paths_found = 0;
 	valid = 1;
@@ -51,9 +51,9 @@ int			propagated(t_path *head, int max_num_paths, int path_length)
 	return (valid);
 }
 
-int			valid_path(t_path *path, unsigned int max_num_paths, int i)
+int		valid_path(t_path *path, unsigned int max_num_paths, int i)
 {
-	unsigned int	num_visits;
+	t_uint	num_visits;
 
 	if (path->current->arr_links[i]->type == END)
 		return (1);
@@ -63,9 +63,9 @@ int			valid_path(t_path *path, unsigned int max_num_paths, int i)
 	return (0);
 }
 
-int			visited(t_path *path, int next_link)
+int		visited(t_path *path, int next_link)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < path->path_length)
@@ -77,7 +77,7 @@ int			visited(t_path *path, int next_link)
 	return (0);
 }
 
-int			collide(t_path_set path_set, t_path *head, t_path *next)
+int		collide(t_path_set path_set, t_path *head, t_path *next)
 {
 	t_path	*current;
 	int		i;
@@ -106,4 +106,18 @@ int			collide(t_path_set path_set, t_path *head, t_path *next)
 		i++;
 	}
 	return (0);
+}
+
+void	update_best(t_path_set *best, t_path_set *path_set)
+{
+	int	j;
+
+	if (path_set->num_moves < best->num_moves)
+	{
+		j = -1;
+		while (++j < path_set->num_paths)
+			best->arr_paths[j] = path_set->arr_paths[j];
+		best->num_moves = path_set->num_moves;
+		best->num_paths = path_set->num_paths;
+	}
 }
