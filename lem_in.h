@@ -6,7 +6,7 @@
 /*   By: jsarkis <jsarkis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/02 15:05:05 by jsarkis           #+#    #+#             */
-/*   Updated: 2020/05/04 11:45:21 by jsarkis          ###   ########.fr       */
+/*   Updated: 2020/05/10 15:51:35 by jsarkis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,9 @@ int					collide(t_path_set path_set, t_path *head, t_path *next);
 
 int					count_occurrences(t_str s, char c);
 
-void				free_arr(void	**arr);
+void				free_arr(void **arr);
+
+void				free_rooms(t_room **arr_rooms);
 
 void				find_path(t_room **arr_rooms, t_data);
 
@@ -110,6 +112,8 @@ void				print_path(t_path *head, t_room **arr_rooms);
 void				print_paths(t_path *head, t_room **arr_rooms);
 
 void				print_rooms(t_room *head);
+
+void				print_variable(void **var, t_str message, int mode);
 
 int					propagated(t_path *head, int max_num_paths, int path_length);
 

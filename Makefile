@@ -3,15 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bswanepo <bswanepo@student.42.fr>          +#+  +:+       +#+         #
+#    By: jsarkis <jsarkis@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/02 15:02:35 by jsarkis           #+#    #+#              #
-#    Updated: 2019/09/19 13:45:43 by bswanepo         ###   ########.fr        #
+#    Updated: 2020/05/10 14:39:14 by jsarkis          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 LEMIN = lem_in
-HEADER = lem_in_js.h
+HEADER = lem_in.h
 CFLAGS = -Wall -Werror -Wextra
 LINK = -L./libft -lft
 LIB = libft/libft.a
@@ -21,14 +21,16 @@ SRCS = srcs/*.c
 all: $(LIB) $(LEMIN) $(SRCS) $(HEADER)
 
 $(LIB):
-	make -C libft
+	sudo make -C libft
 
-$(LEMIN): lem_in_js.c $(SRCS) $(HEADER)
-	gcc $(CFLAGS) lem_in_js.c $(SRCS) $(LINK) -o $(LEMIN)
+$(LEMIN): lem_in.c $(SRCS) $(HEADER)
+	sudo gcc $(CFLAGS) lem_in.c $(SRCS) $(LINK) -o $(LEMIN)
 
 fclean:
-	make -C libft fclean
-	rm lem_in
+	sudo make -C libft fclean
+	sudo rm $(LEMIN)
+
+re: fclean all
 
 norm:
 	norminette lem_in_js.c $(SRCS) $(HEADER)

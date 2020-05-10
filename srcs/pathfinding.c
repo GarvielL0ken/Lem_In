@@ -6,7 +6,7 @@
 /*   By: jsarkis <jsarkis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/17 11:48:10 by jsarkis           #+#    #+#             */
-/*   Updated: 2020/05/04 11:43:33 by jsarkis          ###   ########.fr       */
+/*   Updated: 2020/05/10 15:28:30 by jsarkis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,7 @@ void		find_path(t_room **arr_rooms, t_data data)
 	while (head)
 	{
 		temp = head->next;
+		free(head->arr_path);
 		free(head);
 		head = temp;
 	}

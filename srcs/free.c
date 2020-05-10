@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_arr.c                                         :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jsarkis <jsarkis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/17 11:36:05 by jsarkis           #+#    #+#             */
-/*   Updated: 2020/05/04 11:42:42 by jsarkis          ###   ########.fr       */
+/*   Updated: 2020/05/10 15:51:26 by jsarkis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,4 +20,16 @@ void	free_arr(void **arr)
 	while (arr[++i])
 		free(arr[i]);
 	free(arr);
+}
+
+void	free_rooms(t_room **arr_rooms)
+{
+	int		i;
+
+	i = -1;
+	while (arr_rooms[++i])
+	{
+		free(arr_rooms[i]->arr_links);
+		free(arr_rooms[i]->name);
+	}
 }
