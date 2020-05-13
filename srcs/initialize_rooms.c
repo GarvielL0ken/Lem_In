@@ -6,7 +6,7 @@
 /*   By: jsarkis <jsarkis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/17 11:07:36 by jsarkis           #+#    #+#             */
-/*   Updated: 2020/05/04 11:43:00 by jsarkis          ###   ########.fr       */
+/*   Updated: 2020/05/13 10:51:37 by jsarkis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,16 @@ void	initialize_new_room(t_room **new, t_str *arr_data, t_uint type)
 	(*new)->links = 0;
 	(*new)->type = type;
 	(*new)->visited = 0;
+}
+
+void	check_data(t_str *arr_data)
+{
+	if (!arr_data[0])
+		print_err_msg("Invalid format");
+	if (!arr_data[1])
+		print_err_msg("Invalid format");
+	if (!arr_data[2])
+		print_err_msg("Invalid format");
 }
 
 void	append_head(t_room **head, t_str s, t_uint type)
@@ -44,6 +54,7 @@ void	append_head(t_room **head, t_str s, t_uint type)
 		new = new->next;
 	}
 	arr_data = ft_strsplit(s, ' ');
+	check_data(arr_data);
 	if (!is_integer(arr_data[1]) || !is_integer(arr_data[2]))
 		print_err_msg("Error: Co-ordinate is not a valid integer");
 	initialize_new_room(&new, arr_data, type);
