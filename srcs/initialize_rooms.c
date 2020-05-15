@@ -6,7 +6,7 @@
 /*   By: jsarkis <jsarkis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/17 11:07:36 by jsarkis           #+#    #+#             */
-/*   Updated: 2020/05/13 10:51:37 by jsarkis          ###   ########.fr       */
+/*   Updated: 2020/05/13 11:05:17 by jsarkis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ void	initialize_new_room(t_room **new, t_str *arr_data, t_uint type)
 void	check_data(t_str *arr_data)
 {
 	if (!arr_data[0])
-		print_err_msg("Invalid format");
+		print_err_msg("Error: Invalid format");
 	if (!arr_data[1])
-		print_err_msg("Invalid format");
+		print_err_msg("Error: Invalid format");
 	if (!arr_data[2])
-		print_err_msg("Invalid format");
+		print_err_msg("Error: Invalid format");
 }
 
 void	append_head(t_room **head, t_str s, t_uint type)
